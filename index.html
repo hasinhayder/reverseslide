@@ -89,13 +89,11 @@
         $(".curtain").css("transition","all 0.3s ease-in-out");
         $(".curtain").css("-webkit-transition","all 0.3s ease-in-out");
         $(".curtains").on("mousewheel DOMMouseScroll",$.debounce( 200, true, function(e){
-            console.log("u");
             var scrollDirection = e.originalEvent.wheelDelta || -1 * e.originalEvent.detail;
             if (scrollDirection<0){
                 if(current<totalpanels) {
                     var hlsp = ph * current;
                     var hrsp = ph * ((totalpanels-1)-current);
-                    console.log(current, totalpanels);
                     $(".half-left").css("transform", "translateY(-" + hlsp + "px)");
                     $(".half-right").css("transform", "translateY(-" + hrsp + "px)");
                     current++;
