@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>CSS3-3D-Curtain Animation using Animate.CSS and jQuery</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css"/>
+    <style type="text/css">
+        body {
+            margin: 0px;
+            padding: 0px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .curtains {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+        .curtain {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            text-align: center;
+            font-size: 300px;
+        }
+
+        .curtain .panel{
+            height: 100vh;
+            line-height: 100vh;
+        }
+
+
+        .half-left {
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
+
+        .half-right {
+            width: 50%;
+            height: 100%;
+            margin-left: 50%;
+            transform: translateY(-300%); /* total number of panels -1 * 100% */
+        }
+
+    </style>
+</head>
+<body>
+<a href="http://hasinhayder.github.io/reverseslide"><img style="z-index:999999999;position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+<div class="curtains">
+    <div class="curtain half-left">
+        <div class="panel" style="background-color: #2ecc71;">M</div>
+        <div class="panel" style="background-color: #bdc3c7;">P</div>
+        <div class="panel" style="background-color: #c0392b;">S</div>
+        <div class="panel" style="background-color: #8e44ad;">X</div>
+    </div>
+    <div class="curtain half-right">
+        <div class="panel" style="background-color: #1abc9c;">Y</div>
+        <div class="panel" style="background-color: #e67e22;">T</div>
+        <div class="panel" style="background-color: #2c3e50;">Q</div>
+        <div class="panel" style="background-color: #2980b9;">N</div>
+    </div>
+</div>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript">
+    /*
+     * jQuery throttle / debounce - v1.1 - 3/7/2010
+     * http://benalman.com/projects/jquery-throttle-debounce-plugin/
+     *
+     * Copyright (c) 2010 "Cowboy" Ben Alman
+     * Dual licensed under the MIT and GPL licenses.
+     * http://benalman.com/about/license/
+     */
+    ;(function(b,c){var $=b.jQuery||b.Cowboy||(b.Cowboy={}),a;$.throttle=a=function(e,f,j,i){var h,d=0;if(typeof f!=="boolean"){i=j;j=f;f=c}function g(){var o=this,m=+new Date()-d,n=arguments;function l(){d=+new Date();j.apply(o,n)}function k(){h=c}if(i&&!h){l()}h&&clearTimeout(h);if(i===c&&m>e){l()}else{if(f!==true){h=setTimeout(i?k:l,i===c?e-m:e)}}}if($.guid){g.guid=j.guid=j.guid||$.guid++}return g};$.debounce=function(d,e,f){return f===c?a(d,e,false):a(d,f,e!==false)}})(this);
+
+</script>
+<script type="text/javascript">
+    ;(function($){
+        "use strict"
+        var ph = $(window).height();console.log(ph);
+        var current = 1;
+        var totalpanels =$(".half-left .panel").length;
+        //$(".half-right").css("transform", "translateY(-" + (totalpanels-1) + "00%)");
+
+        $(".curtain").css("transition","all 0.3s ease-in-out");
+        $(".curtain").css("-webkit-transition","all 0.3s ease-in-out");
+        $(".curtains").on("mousewheel",$.debounce( 200, true, function(e){
+            var scrollDirection = e.originalEvent.wheelDelta || -1 * e.originalEvent.detail;
+            if (scrollDirection<0){
+                if(current<totalpanels) {
+                    var hlsp = ph * current;
+                    var hrsp = ph * ((totalpanels-1)-current);
+                    console.log(current, totalpanels);
+                    $(".half-left").css("transform", "translateY(-" + hlsp + "px)");
+                    $(".half-right").css("transform", "translateY(-" + hrsp + "px)");
+                    current++;
+                }
+            }else{
+                if(current>1) {
+                    current--;
+                    console.log(current);
+                    var hlsp = ph * (current-1);
+                    var hrsp = ph * (totalpanels-current);
+                    console.log(current, totalpanels);
+                    $(".half-left").css("transform", "translateY(-" + hlsp + "px)");
+                    $(".half-right").css("transform", "translateY(-" + hrsp + "px)");
+                }
+            }
+        }));
+    })(jQuery)
+</script>
+</body>
+</html>
